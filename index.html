@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Una invitación de boda creada para compartir un día inolvidable.">
+
+    <title>Nuestra Boda | Invitación</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+<link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500&family=Montserrat:wght@300;400;500&family=Parisienne&display=swap"
+    rel="stylesheet">
+
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=Montserrat:wght@300;400;500&display=swap"
+        rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <script src="assets/js/main.js" defer></script>
+</head>
+
+<body>
+    <main class="invitacion">
+        <section class="portada" id="portada">
+
+            <p class="portada__sobretexto">
+                UNA INVITACIÓN ESPECIAL
+            </p>
+
+            <div class="sobre" id="sobre">
+
+                <img class="sobre__cuerpo" src="assets/img/sobre-base.png" alt="" aria-hidden="true">
+
+                <button class="sobre__sello" id="abrirInvitacion" type="button" aria-label="Abrir invitación de boda"
+                    aria-controls="contenidoInvitacion" aria-expanded="false">
+
+                    <img src="assets/img/sello-cera-recortado.png" alt="" aria-hidden="true">
+
+                </button>
+
+            </div>
+
+            <p class="portada__instruccion">
+                Tocá el sello para abrir la invitación
+            </p>
+
+            <span class="portada__detalle">
+                CON AMOR, PARA SIEMPRE
+            </span>
+
+        </section>
+    </main>
+
+    <template id="plantillaInvitacion">
+        <section class="contenido" id="contenidoInvitacion" aria-hidden="true" inert>
+
+            <div class="contenido__marco">
+
+                <p class="contenido__etiqueta">
+                    EL COMIENZO DE UNA NUEVA HISTORIA
+                </p>
+
+                <p class="contenido__frase">
+                    Hay momentos que merecen ser eternos
+                </p>
+
+                <h1 class="contenido__nombres">
+                    Lucía <span>&amp;</span> Mateo
+                </h1>
+
+                <div class="contenido__ornamento">✧</div>
+
+                <p class="contenido__mensaje">
+                    Con mucha ilusión, queremos compartir con vos
+                    uno de los días más importantes de nuestras vidas.
+                </p>
+
+                <p class="contenido__fecha">
+                    Sábado 23 de octubre de 2027
+                </p>
+
+                <div class="contenido__ornamento">✧</div>
+                <div class="contenido__eventos">
+
+                    <!-- Registro Civil -->
+                    <div class="contenido__evento">
+
+                        <img class="contenido__ilustracion" src="assets/img/registro-civil.png"
+                            alt="Libreta del Registro Civil" loading="lazy">
+
+                        <h2 class="contenido__titulo">Ceremonia civil</h2>
+
+                        <p class="contenido__horario">11:00 h</p>
+
+                        <p class="contenido__lugar">
+                            Registro Civil de Villa Carlos Paz
+                        </p>
+
+                        <a class="contenido__ubicacion"
+                            href="https://www.google.com/maps/search/?api=1&query=Registro+Civil+Villa+Carlos+Paz+Cordoba"
+                            target="_blank" rel="noopener noreferrer">
+                            Ver ubicación
+                        </a>
+
+                    </div>
+
+                    <!-- Iglesia -->
+                    <div class="contenido__evento">
+
+                        <img class="contenido__ilustracion" src="assets/img/iglesia.png" alt="Iglesia de la ceremonia"
+                            loading="lazy">
+
+                        <h2 class="contenido__titulo">Ceremonia religiosa</h2>
+
+                        <p class="contenido__horario">17:30 h</p>
+
+                        <p class="contenido__lugar">
+                            Parroquia Nuestra Señora del Carmen
+                        </p>
+
+                        <a class="contenido__ubicacion"
+                            href="https://www.google.com/maps/search/?api=1&query=Parroquia+Nuestra+Se%C3%B1ora+del+Carmen+Villa+Carlos+Paz"
+                            target="_blank" rel="noopener noreferrer">
+                            Ver ubicación
+                        </a>
+
+                    </div>
+
+                    <!-- Cena -->
+                    <div class="contenido__evento">
+
+                        <img class="contenido__ilustracion" src="assets/img/copas-champagne.png"
+                            alt="Copas de champagne" loading="lazy">
+
+                        <h2 class="contenido__titulo">Cena y celebración</h2>
+
+                        <p class="contenido__horario">21:00 h</p>
+
+                        <p class="contenido__lugar">Altos Eventos</p>
+
+                        <a class="contenido__ubicacion"
+                            href="https://www.google.com/maps/search/?api=1&query=Altos+Eventos+Villa+Carlos+Paz+Cordoba"
+                            target="_blank" rel="noopener noreferrer">
+                            Ver ubicación
+                        </a>
+
+                    </div>
+
+                </div>
+        </section>
+    </template>
+
+    <footer class="footer">
+        <a class="footer__enlace" href="#" aria-label="Instagram de Tu Galaxia Digital">
+            Tu Invitación · 2026
+        </a>
+    </footer>
+</body>
+
+</html>

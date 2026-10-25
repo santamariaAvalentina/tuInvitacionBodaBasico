@@ -1,0 +1,603 @@
+$papel: #fffdf8;
+$dorado: #b99a62;
+$marron: #604b3c;
+$texto: #51443b;
+
+* {
+    box-sizing: border-box;
+}
+
+html {
+    min-height: 100%;
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    min-width: 320px;
+    min-height: 100vh;
+    font-family: "Montserrat", sans-serif;
+    color: $texto;
+    background: $papel;
+}
+
+button {
+    font: inherit;
+}
+
+img {
+    max-width: 100%;
+}
+
+.invitacion {
+    min-height: 100vh;
+}
+
+// PORTADA
+
+.portada {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    min-height: 100svh;
+    padding: 60px 20px;
+    overflow: hidden;
+    isolation: isolate;
+    background:
+        linear-gradient(rgba(255, 253, 248, 0.08), rgba(255, 253, 248, 0.08)),
+        url("../img/fondo-boda.png") center / cover no-repeat;
+
+    &::before {
+        content: "";
+        position: absolute;
+        inset: 12px;
+        z-index: -1;
+        border: 1px solid rgba($dorado, 0.65);
+        pointer-events: none;
+    }
+
+    &__sobretexto {
+        margin: 0 0 28px;
+        color: $marron;
+        font-size: 0.68rem;
+        font-weight: 500;
+        letter-spacing: 0.22em;
+        text-align: center;
+        transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+    }
+
+    &__instruccion {
+        margin: 24px 0 0;
+        color: $marron;
+        font-size: 0.74rem;
+        letter-spacing: 0.04em;
+        line-height: 1.7;
+        text-align: center;
+        transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+    }
+
+    &__detalle {
+        position: static;
+        margin: 12px 0 0;
+        color: $marron;
+        font-size: 0.58rem;
+        letter-spacing: 0.2em;
+        line-height: 4;
+        text-align: center;
+        transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+    }
+
+    &.invitacion-desplegada {
+
+        .sobre,
+        .portada__sobretexto,
+        .portada__instruccion,
+        .portada__detalle {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+        }
+    }
+}
+
+// SOBRE
+
+.sobre {
+    position: relative;
+    flex: 0 0 auto;
+    width: min(90vw, 500px);
+    aspect-ratio: 1.59;
+    perspective: 1200px;
+    filter: drop-shadow(0 12px 20px rgba(70, 49, 30, 0.18));
+    transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+
+    img {
+        display: block;
+        user-select: none;
+        -webkit-user-drag: none;
+    }
+
+    &__cuerpo {
+        position: absolute;
+        inset: 0;
+        z-index: 2;
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        pointer-events: none;
+    }
+
+    &__abierto {
+        position: absolute;
+        top: 0;
+        left: -8%;
+        z-index: 4;
+        width: 115%;
+        height: 100%;
+        max-width: none;
+        object-fit: fill;
+        object-position: center;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+    }
+
+    &__sello {
+        position: absolute;
+        z-index: 5;
+        top: 63%;
+        left: 42%;
+        width: clamp(58px, 15%, 82px);
+        aspect-ratio: 1;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        transform: translate(-50%, -50%);
+        transform-origin: center;
+        transition:
+            transform 0.25s ease,
+            opacity 0.3s ease,
+            visibility 0s linear 0.3s;
+
+        img {
+            width: 200%;
+            height: 200%;
+            max-width: none;
+            object-fit: contain;
+            pointer-events: none;
+        }
+
+        &:hover {
+            transform: translate(-50%, -50%) scale(1.06);
+        }
+
+        &:active {
+            transform: translate(-50%, -50%) scale(0.96);
+        }
+
+        &:focus-visible {
+            outline: 2px solid $dorado;
+            outline-offset: 5px;
+            border-radius: 50%;
+        }
+
+        &:disabled {
+            cursor: default;
+        }
+    }
+}
+
+.portada.esta-abierta .sobre__sello {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+// INVITACIÓN
+
+.contenido {
+    position: absolute;
+    top: 8%;
+    left: 10%;
+    z-index: 3;
+    display: block;
+    width: 80%;
+    height: 84%;
+    padding: 6px;
+    overflow: hidden;
+    border: 1px solid rgba($dorado, 0.6);
+    background: $papel;
+    color: $texto;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+
+    &__marco {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: clamp(5px, 1.1vh, 12px);
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+        padding: clamp(12px, 2.5vh, 24px) clamp(12px, 3vw, 30px);
+        overflow: hidden;
+        text-align: center;
+    }
+
+    &__etiqueta {
+        margin: 0;
+        color: $dorado;
+        font-size: clamp(0.52rem, 1.2vh, 0.7rem);
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        line-height: 1.5;
+    }
+
+    &__frase {
+        max-width: 90%;
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(0.95rem, 2.2vh, 1.35rem);
+        font-style: italic;
+        line-height: 1.25;
+    }
+
+    &__nombres {
+        margin: 0;
+        color: $marron;
+        font-family: "Parisienne", cursive;
+        font-size: clamp(3.2rem, 7vh, 5rem);
+        font-weight: 400;
+        font-style: normal;
+        line-height: 1.15;
+        text-align: center;
+
+        span {
+            color: $dorado;
+            font-family: "Parisienne", cursive;
+            font-weight: 400;
+            font-style: normal;
+        }
+    }
+
+    &__ornamento {
+        margin: 0;
+        color: $dorado;
+        font-size: clamp(1.8rem, 4vh, 2.8rem);
+        line-height: 1;
+    }
+
+    &__mensaje {
+        max-width: 480px;
+        margin: 0;
+        font-size: clamp(0.68rem, 1.5vh, 0.88rem);
+        font-weight: 400;
+        line-height: 1.65;
+    }
+
+    &__fecha {
+        margin: 0;
+        color: $marron;
+        font-size: clamp(0.7rem, 1.6vh, 0.9rem);
+        font-weight: 500;
+        letter-spacing: 0.1em;
+        line-height: 1.5;
+    }
+
+    // Eventos en tres columnas
+
+    &__eventos {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        align-items: stretch;
+        gap: clamp(8px, 2vw, 20px);
+        width: 100%;
+        max-width: 850px;
+        margin: 0 auto;
+    }
+
+    &__evento {
+        display: grid;
+        grid-template-rows: 90px 38px 22px 42px 32px;
+        align-content: start;
+        justify-items: center;
+        align-items: center;
+        min-width: 0;
+        padding: 0;
+        gap: 0;
+        text-align: center;
+
+        .contenido__ilustracion {
+            display: block;
+            width: 100%;
+            height: 82px;
+            max-width: 100px;
+            margin: 0 auto;
+            object-fit: contain;
+        }
+    }
+
+    &__titulo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        color: $marron;
+        font-size: clamp(0.7rem, 1.6vh, 0.92rem);
+        font-weight: 500;
+        line-height: 1.25;
+        text-align: center;
+    }
+
+    &__horario {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        font-size: clamp(0.62rem, 1.35vh, 0.78rem);
+        line-height: 1.45;
+    }
+
+    &__lugar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        margin: 0;
+        font-size: clamp(0.62rem, 1.35vh, 0.78rem);
+        line-height: 1.35;
+        overflow-wrap: anywhere;
+        text-align: center;
+    }
+
+    &__ubicacion {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        align-self: center;
+        justify-self: center;
+        gap: 5px;
+        margin: 0;
+        padding: 7px 11px;
+        border: 1px solid rgba($dorado, 0.75);
+        border-radius: 50px;
+        background: transparent;
+        color: $marron;
+        font-family: "Montserrat", sans-serif;
+        font-size: clamp(0.58rem, 1.15vh, 0.7rem);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: background 0.2s ease, color 0.2s ease;
+
+        &:hover {
+            background: $dorado;
+            color: $papel;
+        }
+
+        &:focus-visible {
+            outline: 2px solid $dorado;
+            outline-offset: 3px;
+        }
+    }
+
+    &__cierre {
+        margin: 0;
+        font-family: "Cormorant Garamond", serif;
+        font-size: clamp(0.8rem, 1.7vh, 1rem);
+        font-style: italic;
+        text-align: center;
+    }
+}
+
+// APERTURA
+
+.portada.esta-abierta .sobre .contenido {
+    opacity: 1;
+    visibility: visible;
+}
+
+.contenido.contenido--animando {
+    position: fixed;
+    z-index: 1000;
+    margin: 0;
+    transform: none;
+    transform-origin: top left;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: none;
+    will-change: transform;
+}
+
+// INVITACIÓN DESPLEGADA
+
+.contenido.contenido--final {
+    position: fixed;
+    z-index: 1000;
+    margin: 0;
+    padding: 7px;
+    border: 1px solid rgba($dorado, 0.75);
+    background: $papel;
+    box-shadow: 0 14px 40px rgba(45, 30, 20, 0.12);
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    overflow: hidden;
+    pointer-events: auto;
+    will-change: auto;
+
+    .contenido__marco {
+        justify-content: space-evenly;
+        height: 100%;
+        min-height: 0;
+    }
+}
+
+// PIE DE PÁGINA
+
+
+.footer {
+    position: fixed;
+    bottom: 18px;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    padding: 0 12px;
+    background: transparent;
+    text-align: center;
+    pointer-events: none;
+
+    &__enlace {
+        color: rgba($marron, 0.75);
+        font-size: 0.65rem;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        pointer-events: auto;
+    }
+}
+
+
+// CELULARES
+
+@media (max-width: 600px) {
+    .portada {
+        padding: 50px 16px;
+
+        &::before {
+            inset: 9px;
+        }
+
+        &__sobretexto {
+            margin-bottom: 22px;
+            font-size: 0.6rem;
+        }
+
+        &__instruccion {
+            max-width: 240px;
+            font-size: 0.7rem;
+            line-height: 1.7;
+        }
+
+        &__detalle {
+            bottom: 20px;
+            font-size: 0.52rem;
+        }
+    }
+
+    .contenido.contenido--final {
+        padding: 5px;
+
+        .contenido__marco {
+            gap: clamp(4px, 0.8vh, 7px);
+            padding: 8px 5px;
+        }
+
+        .contenido__etiqueta {
+            font-size: clamp(0.46rem, 1.2vh, 0.58rem);
+            letter-spacing: 0.13em;
+        }
+
+        .contenido__frase {
+            font-size: clamp(0.8rem, 1.9vh, 1rem);
+        }
+
+        .contenido__nombres {
+            font-size: clamp(1.8rem, 5.6vh, 2.5rem);
+        }
+
+        .contenido__mensaje {
+            max-width: 340px;
+            font-size: clamp(0.6rem, 1.35vh, 0.75rem);
+            line-height: 1.5;
+        }
+
+        .contenido__fecha {
+            font-size: clamp(0.62rem, 1.4vh, 0.78rem);
+            letter-spacing: 0.07em;
+        }
+
+        .contenido__eventos {
+            gap: 5px;
+        }
+
+        .contenido__evento {
+            grid-template-rows: 66px 34px 20px 40px 30px;
+
+            .contenido__ilustracion {
+                width: 100%;
+                height: 60px;
+                max-width: 72px;
+            }
+        }
+
+        .contenido__titulo {
+            font-size: clamp(0.58rem, 2vw, 0.72rem);
+        }
+
+        .contenido__horario,
+        .contenido__lugar {
+            font-size: clamp(0.48rem, 1.6vw, 0.62rem);
+        }
+
+        .contenido__ubicacion {
+            gap: 3px;
+            padding: 5px 7px;
+            font-size: clamp(0.48rem, 1.5vw, 0.6rem);
+        }
+
+        .contenido__cierre {
+            font-size: clamp(0.68rem, 1.5vh, 0.82rem);
+        }
+    }
+}
+
+// PANTALLAS BAJAS
+
+@media (max-height: 700px) {
+    .contenido.contenido--final {
+        .contenido__marco {
+            gap: 4px;
+            padding-top: 6px;
+            padding-bottom: 6px;
+        }
+
+        .contenido__evento {
+            grid-template-rows: 66px 34px 20px 40px 30px;
+
+            .contenido__ilustracion {
+                height: clamp(46px, 8.5vh, 68px);
+                max-width: 72px;
+            }
+        }
+
+        .contenido__ornamento {
+            font-size: 1.8rem;
+        }
+    }
+}
+
+// ACCESIBILIDAD
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .portada,
+    .sobre,
+    .sobre__abierto,
+    .sobre__sello,
+    .portada__sobretexto,
+    .portada__instruccion,
+    .portada__detalle {
+        transition-duration: 0.01ms !important;
+    }
+}
