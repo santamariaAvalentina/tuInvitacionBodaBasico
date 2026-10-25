@@ -1,3 +1,4 @@
+
 document.addEventListener("DOMContentLoaded", () => {
   const boton = document.querySelector("#abrirInvitacion");
   const portada = document.querySelector("#portada");
@@ -11,9 +12,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let animando = false;
   let desplegada = false;
-
-  const esperar = (ms) =>
-    new Promise((resolve) => window.setTimeout(resolve, ms));
 
   const siguienteFrame = () =>
     new Promise((resolve) => requestAnimationFrame(resolve));
@@ -49,102 +47,109 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function agregarBotonVolver(tarjeta) {
-  const botonVolver = document.createElement("button");
+    const botonVolver = document.createElement("button");
 
-  botonVolver.type = "button";
-  botonVolver.className = "contenido__volver";
-  botonVolver.setAttribute("aria-label", "Volver al sobre");
-  botonVolver.innerHTML = "←";
+    botonVolver.type = "button";
+    botonVolver.className = "contenido__volver";
+    botonVolver.setAttribute("aria-label", "Volver al sobre");
+    botonVolver.textContent = "←";
 
-  Object.assign(botonVolver.style, {
-    position: "absolute",
-    top: "12px",
-    left: "12px",
-    zIndex: "20",
-    width: "36px",
-    height: "36px",
-    border: "1px solid #b99a62",
-    borderRadius: "50%",
-    background: "#fffdf8",
-    color: "#604b3c",
-    fontSize: "24px",
-    cursor: "pointer"
-  });
+    Object.assign(botonVolver.style, {
+      position: "absolute",
+      top: "12px",
+      left: "12px",
+      zIndex: "20",
+      width: "36px",
+      height: "36px",
+      padding: "0",
+      border: "1px solid #b99a62",
+      borderRadius: "50%",
+      background: "#fffdf8",
+      color: "#604b3c",
+      fontSize: "24px",
+      lineHeight: "1",
+      cursor: "pointer",
+      WebkitTapHighlightColor: "transparent"
+    });
 
-  botonVolver.addEventListener("click", () => {
-    const anillos = document.createElement("div");
+    botonVolver.addEventListener("click", () => {
+      if (animando) return;
 
-    anillos.innerHTML = `
-  <div style="
-    position:fixed;
-    inset:0;
-    z-index:99999;
-    display:flex;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-    background:#fffdf8;
-  ">
-    <div style="
-      position:relative;
-      width:90px;
-      height:90px;
-    ">
-      <span style="
-        position:absolute;
-        left:12px;
-        top:25px;
-        width:48px;
-        height:48px;
-        border:2px solid #b99a62;
-        border-radius:50%;
-        animation:anilloIzq 1s ease-in-out infinite alternate;
-      "></span>
+      animando = true;
 
-      <span style="
-        position:absolute;
-        right:12px;
-        top:25px;
-        width:48px;
-        height:48px;
-        border:2px solid #b99a62;
-        border-radius:50%;
-        animation:anilloDer 1s ease-in-out infinite alternate;
-      "></span>
-    </div>
+      const anillos = document.createElement("div");
 
-    <p style="
-      margin:0;
-      color:#604b3c;
-      font-family:Montserrat,sans-serif;
-      font-size:11px;
-      letter-spacing:2px;
-      text-transform:uppercase;
-    ">Tu Invitación · 2026</p>
+      anillos.innerHTML = `
+        <div style="
+          position:fixed;
+          inset:0;
+          z-index:99999;
+          display:flex;
+          flex-direction:column;
+          align-items:center;
+          justify-content:center;
+          gap:18px;
+          background:#fffdf8;
+        ">
+          <div style="
+            position:relative;
+            width:90px;
+            height:90px;
+          ">
+            <span style="
+              position:absolute;
+              left:12px;
+              top:25px;
+              width:48px;
+              height:48px;
+              border:2px solid #b99a62;
+              border-radius:50%;
+              animation:anilloIzq 1s ease-in-out infinite alternate;
+            "></span>
 
-    <style>
-      @keyframes anilloIzq {
-        to { transform:translateX(8px) rotate(-15deg); }
-      }
+            <span style="
+              position:absolute;
+              right:12px;
+              top:25px;
+              width:48px;
+              height:48px;
+              border:2px solid #b99a62;
+              border-radius:50%;
+              animation:anilloDer 1s ease-in-out infinite alternate;
+            "></span>
+          </div>
 
-      @keyframes anilloDer {
-        to { transform:translateX(-8px) rotate(15deg); }
-      }
-    </style>
-  </div>
-`;
-  
+          <p style="
+            margin:0;
+            color:#604b3c;
+            font-family:Montserrat,sans-serif;
+            font-size:11px;
+            letter-spacing:2px;
+            text-transform:uppercase;
+          ">Tu Invitación · 2026</p>
 
-    document.body.appendChild(anillos);
+          <style>
+            @keyframes anilloIzq {
+              to { transform:translateX(8px) rotate(-15deg); }
+            }
 
-    window.setTimeout(() => {
-      window.location.reload();
-    }, 900);
-  });
+            @keyframes anilloDer {
+              to { transform:translateX(-8px) rotate(15deg); }
+            }
+          </style>
+        </div>
+      `;
 
-  tarjeta.appendChild(botonVolver);
-}
+      document.body.appendChild(anillos);
+
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 900);
+    });
+
+    tarjeta.appendChild(botonVolver);
+  }
+
   boton.addEventListener("click", async () => {
     if (animando || desplegada) return;
 
@@ -213,7 +218,7 @@ document.addEventListener("DOMContentLoaded", () => {
       portada.classList.add("esta-abierta");
       portada.classList.add("invitacion-desplegada");
 
-      // 7. Expandir la invitación suavemente.
+      // 7. Animación original de apertura.
       movimiento = tarjeta.animate(
         [
           { transform: transformacionInicial },
@@ -226,9 +231,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       );
 
-
-
-      // 8. Fijar el estado final.
+      // 8. Estado final original, sin cambiar la transición.
       Object.assign(tarjeta.style, {
         transform: "none",
         overflowX: "hidden",
@@ -236,14 +239,13 @@ document.addEventListener("DOMContentLoaded", () => {
         pointerEvents: "auto"
       });
 
-     
-tarjeta.classList.remove("contenido--animando");
-tarjeta.classList.add("contenido--final");
+      tarjeta.classList.remove("contenido--animando");
+      tarjeta.classList.add("contenido--final");
 
-agregarBotonVolver(tarjeta);
+      // 9. Agregar el botón para volver.
+      agregarBotonVolver(tarjeta);
 
-desplegada = true;
-      
+      desplegada = true;
     } catch (error) {
       console.error("Error al abrir la invitación:", error);
 
@@ -262,6 +264,7 @@ desplegada = true;
           opacity: "1",
           visibility: "visible",
           overflowY: "auto",
+          overflowX: "hidden",
           pointerEvents: "auto"
         });
 
@@ -270,11 +273,17 @@ desplegada = true;
         tarjeta.inert = false;
         tarjeta.setAttribute("aria-hidden", "false");
 
+        agregarBotonVolver(tarjeta);
+
+        portada.classList.add("esta-abierta");
         portada.classList.add("invitacion-desplegada");
+
         desplegada = true;
       } else {
         boton.disabled = false;
         boton.setAttribute("aria-expanded", "false");
+        portada.classList.remove("esta-abierta");
+        portada.classList.remove("invitacion-desplegada");
       }
     } finally {
       animando = false;

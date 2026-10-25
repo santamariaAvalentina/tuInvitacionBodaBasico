@@ -601,3 +601,20 @@ img {
         transition-duration: 0.01ms !important;
     }
 }
+/* TOQUE DEL SELLO EN CELULARES */
+
+.sobre__sello {
+    -webkit-tap-highlight-color: transparent;
+    tap-highlight-color: transparent;
+    touch-action: manipulation;
+
+    &:focus {
+        outline: none;
+    }
+
+    &:focus-visible {
+        outline: 2px solid $dorado;
+        outline-offset: 5px;
+        border-radius: 50%;
+    }
+}
