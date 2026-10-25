@@ -1,163 +1,163 @@
 document.addEventListener("DOMContentLoaded", () => {
-    const boton = document.querySelector("#abrirInvitacion");
-    const portada = document.querySelector("#portada");
-    const sobre = document.querySelector("#sobre");
-    const plantilla = document.querySelector("#plantillaInvitacion");
+  const boton = document.querySelector("#abrirInvitacion");
+  const portada = document.querySelector("#portada");
+  const sobre = document.querySelector("#sobre");
+  const plantilla = document.querySelector("#plantillaInvitacion");
 
-    if (!boton || !portada || !sobre || !plantilla) {
-        console.error("Faltan elementos de la invitación.");
-        return;
+  if (!boton || !portada || !sobre || !plantilla) {
+    console.error("Faltan elementos de la invitación.");
+    return;
+  }
+
+  let animando = false;
+  let desplegada = false;
+
+  const siguienteFrame = () =>
+    new Promise((resolve) => requestAnimationFrame(resolve));
+
+  function mostrarCorazon(destino) {
+    if (!destino) {
+      console.warn("No se encontró el elemento & de los nombres.");
+      return;
     }
 
-    let animando = false;
-    let desplegada = false;
+    const posicion = destino.getBoundingClientRect();
 
-    const siguienteFrame = () =>
-        new Promise((resolve) => requestAnimationFrame(resolve));
+    const corazon = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
 
-    function mostrarCorazon(destino) {
-        if (!destino) {
-            console.warn("No se encontró el elemento & de los nombres.");
-            return;
+    corazon.setAttribute("viewBox", "0 0 100 100");
+    corazon.setAttribute("width", "160");
+    corazon.setAttribute("height", "160");
+    corazon.setAttribute("aria-hidden", "true");
+
+    Object.assign(corazon.style, {
+      position: "fixed",
+      left: `${posicion.left + posicion.width / 2}px`,
+      top: `${posicion.top + posicion.height / 2}px`,
+      width: "160px",
+      height: "160px",
+      zIndex: "2000",
+      overflow: "visible",
+      pointerEvents: "none",
+      transform: "translate(-50%, -50%) scale(0.1)",
+      transformOrigin: "center",
+      opacity: "0"
+    });
+
+    const forma = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "path"
+    );
+
+    forma.setAttribute(
+      "d",
+      "M50 85 C40 76 10 55 10 32 C10 10 38 5 50 27 C62 5 90 10 90 32 C90 55 60 76 50 85 Z"
+    );
+
+    forma.setAttribute("fill", "none");
+    forma.setAttribute("stroke", "#b99a62");
+    forma.setAttribute("stroke-width", "1.5");
+    forma.setAttribute("stroke-linecap", "round");
+    forma.setAttribute("stroke-linejoin", "round");
+
+    corazon.appendChild(forma);
+    document.body.appendChild(corazon);
+
+    corazon.animate(
+      [
+        {
+          transform: "translate(-50%, -50%) scale(0.1)",
+          opacity: 0
+        },
+        {
+          transform: "translate(-50%, -50%) scale(1.5)",
+          opacity: 1,
+          offset: 0.35
+        },
+        {
+          transform: "translate(-50%, -50%) scale(0.1)",
+          opacity: 0
         }
+      ],
+      {
+        duration: 2500,
+        iterations: Infinity,
+        easing: "ease-in-out"
+      }
+    );
+  }
 
-        const posicion = destino.getBoundingClientRect();
+  function obtenerDestino() {
+    const viewport = window.visualViewport;
 
-        const corazon = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "svg"
-        );
+    const anchoPantalla = viewport
+      ? viewport.width
+      : document.documentElement.clientWidth;
 
-        corazon.setAttribute("viewBox", "0 0 100 100");
-        corazon.setAttribute("width", "160");
-        corazon.setAttribute("height", "160");
-        corazon.setAttribute("aria-hidden", "true");
+    const altoPantalla = viewport
+      ? viewport.height
+      : window.innerHeight;
 
-        Object.assign(corazon.style, {
-            position: "fixed",
-            left: `${posicion.left + posicion.width / 2}px`,
-            top: `${posicion.top + posicion.height / 2}px`,
-            width: "160px",
-            height: "160px",
-            zIndex: "2000",
-            overflow: "visible",
-            pointerEvents: "none",
-            transform: "translate(-50%, -50%) scale(0.1)",
-            transformOrigin: "center",
-            opacity: "0"
-        });
+    const margenX = anchoPantalla <= 480 ? 12 : 32;
+    const margenY = 16;
 
-        const forma = document.createElementNS(
-            "http://www.w3.org/2000/svg",
-            "path"
-        );
+    const width = Math.max(
+      1,
+      Math.min(anchoPantalla - margenX * 2, 600)
+    );
 
-        forma.setAttribute(
-            "d",
-            "M50 85 C40 76 10 55 10 32 C10 10 38 5 50 27 C62 5 90 10 90 32 C90 55 60 76 50 85 Z"
-        );
+    const height = Math.max(
+      1,
+      Math.min(altoPantalla - margenY * 2, 850)
+    );
 
-        forma.setAttribute("fill", "none");
-        forma.setAttribute("stroke", "#b99a62");
-        forma.setAttribute("stroke-width", "1.5");
-        forma.setAttribute("stroke-linecap", "round");
-        forma.setAttribute("stroke-linejoin", "round");
+    return {
+      left: (anchoPantalla - width) / 2,
+      top: (altoPantalla - height) / 2,
+      width,
+      height
+    };
+  }
 
-        corazon.appendChild(forma);
-        document.body.appendChild(corazon);
+  function agregarBotonVolver(tarjeta) {
+    if (tarjeta.querySelector(".contenido__volver")) return;
 
-        corazon.animate(
-            [
-                {
-                    transform: "translate(-50%, -50%) scale(0.1)",
-                    opacity: 0
-                },
-                {
-                    transform: "translate(-50%, -50%) scale(1.5)",
-                    opacity: 1,
-                    offset: 0.35
-                },
-                {
-                    transform: "translate(-50%, -50%) scale(0.1)",
-                    opacity: 0
-                }
-            ],
-            {
-                duration: 2500,
-                iterations: Infinity,
-                easing: "ease-in-out"
-            }
-        );
-    }
+    const botonVolver = document.createElement("button");
 
-    function obtenerDestino() {
-        const viewport = window.visualViewport;
+    botonVolver.type = "button";
+    botonVolver.className = "contenido__volver";
+    botonVolver.setAttribute("aria-label", "Volver al sobre");
+    botonVolver.textContent = "←";
 
-        const anchoPantalla = viewport
-            ? viewport.width
-            : document.documentElement.clientWidth;
+    Object.assign(botonVolver.style, {
+      position: "absolute",
+      top: "12px",
+      left: "12px",
+      zIndex: "20",
+      width: "36px",
+      height: "36px",
+      padding: "0",
+      border: "1px solid #b99a62",
+      borderRadius: "50%",
+      background: "#fffdf8",
+      color: "#604b3c",
+      fontSize: "24px",
+      lineHeight: "1",
+      cursor: "pointer",
+      WebkitTapHighlightColor: "transparent"
+    });
 
-        const altoPantalla = viewport
-            ? viewport.height
-            : window.innerHeight;
+    botonVolver.addEventListener("click", () => {
+      if (animando) return;
 
-        const margenX = anchoPantalla <= 480 ? 12 : 32;
-        const margenY = 16;
+      animando = true;
 
-        const width = Math.max(
-            1,
-            Math.min(anchoPantalla - margenX * 2, 600)
-        );
+      const anillos = document.createElement("div");
 
-        const height = Math.max(
-            1,
-            Math.min(altoPantalla - margenY * 2, 850)
-        );
-
-        return {
-            left: (anchoPantalla - width) / 2,
-            top: (altoPantalla - height) / 2,
-            width,
-            height
-        };
-    }
-
-    function agregarBotonVolver(tarjeta) {
-        if (tarjeta.querySelector(".contenido__volver")) return;
-
-        const botonVolver = document.createElement("button");
-
-        botonVolver.type = "button";
-        botonVolver.className = "contenido__volver";
-        botonVolver.setAttribute("aria-label", "Volver al sobre");
-        botonVolver.textContent = "←";
-
-        Object.assign(botonVolver.style, {
-            position: "absolute",
-            top: "12px",
-            left: "12px",
-            zIndex: "20",
-            width: "36px",
-            height: "36px",
-            padding: "0",
-            border: "1px solid #b99a62",
-            borderRadius: "50%",
-            background: "#fffdf8",
-            color: "#604b3c",
-            fontSize: "24px",
-            lineHeight: "1",
-            cursor: "pointer",
-            WebkitTapHighlightColor: "transparent"
-        });
-
-        botonVolver.addEventListener("click", () => {
-            if (animando) return;
-
-            animando = true;
-
-            const anillos = document.createElement("div");
-
-            anillos.innerHTML = `
+      anillos.innerHTML = `
                 <div style="
                     position:fixed;
                     inset:0;
@@ -222,161 +222,161 @@ document.addEventListener("DOMContentLoaded", () => {
                 </div>
             `;
 
-            document.body.appendChild(anillos);
+      document.body.appendChild(anillos);
 
-            window.setTimeout(() => {
-                window.location.reload();
-            }, 900);
+      window.setTimeout(() => {
+        window.location.reload();
+      }, 900);
+    });
+
+    tarjeta.appendChild(botonVolver);
+  }
+
+  boton.addEventListener("click", async () => {
+    if (animando || desplegada) return;
+
+    animando = true;
+    boton.disabled = true;
+    boton.setAttribute("aria-expanded", "true");
+
+    let tarjeta;
+    let movimiento;
+
+    try {
+      tarjeta = plantilla.content.firstElementChild.cloneNode(true);
+      tarjeta.id = "contenidoInvitacion";
+      tarjeta.inert = false;
+      tarjeta.setAttribute("aria-hidden", "false");
+
+      document.body.appendChild(tarjeta);
+
+      const inicio = sobre.getBoundingClientRect();
+
+      if (!inicio.width || !inicio.height) {
+        throw new Error("No se pudo medir el sobre.");
+      }
+
+      const destino = obtenerDestino();
+
+      Object.assign(tarjeta.style, {
+        position: "fixed",
+        left: `${destino.left}px`,
+        top: `${destino.top}px`,
+        width: `${destino.width}px`,
+        height: `${destino.height}px`,
+        margin: "0",
+        zIndex: "1000",
+        boxSizing: "border-box",
+        transformOrigin: "top left",
+        overflowY: "hidden",
+        overflowX: "hidden",
+        opacity: "0.90",
+        visibility: "visible",
+        pointerEvents: "painted"
+      });
+
+      tarjeta.classList.add("contenido--animando");
+
+      const escalaX = inicio.width / destino.width;
+      const escalaY = inicio.height / destino.height;
+      const desplazamientoX = inicio.left - destino.left;
+      const desplazamientoY = inicio.top - destino.top;
+
+      const transformacionInicial =
+        `translate(${desplazamientoX}px, ${desplazamientoY}px) ` +
+        `scale(${escalaX}, ${escalaY})`;
+
+      tarjeta.style.transform = transformacionInicial;
+      tarjeta.getBoundingClientRect();
+
+      await siguienteFrame();
+
+      portada.classList.add("esta-abierta");
+      portada.classList.add("invitacion-desplegada");
+
+      movimiento = tarjeta.animate(
+        [
+          { transform: transformacionInicial },
+          { transform: "translate(0, 0) scale(1, 1)" }
+        ],
+        {
+          duration: 1000,
+          easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
+          fill: "forwards"
+        }
+      );
+
+      Object.assign(tarjeta.style, {
+        transform: "none",
+        overflowX: "hidden",
+        overflowY: "auto",
+        pointerEvents: "auto"
+      });
+
+      tarjeta.classList.remove("contenido--animando");
+      tarjeta.classList.add("contenido--final");
+
+      agregarBotonVolver(tarjeta);
+
+      desplegada = true;
+
+      movimiento.onfinish = () => {
+        const ampersand = Array.from(
+          tarjeta.querySelectorAll(".contenido__nombres span")
+        ).find((elemento) =>
+          elemento.textContent.includes("&")
+        );
+
+        if (ampersand) {
+          mostrarCorazon(ampersand);
+        } else {
+          console.warn(
+            "No se encontró el &. Revisá el HTML de los nombres."
+          );
+        }
+      };
+    } catch (error) {
+      console.error("Error al abrir la invitación:", error);
+
+      if (movimiento) movimiento.cancel();
+
+      if (tarjeta?.isConnected) {
+        const destino = obtenerDestino();
+
+        Object.assign(tarjeta.style, {
+          position: "fixed",
+          left: `${destino.left}px`,
+          top: `${destino.top}px`,
+          width: `${destino.width}px`,
+          height: `${destino.height}px`,
+          transform: "none",
+          opacity: "1",
+          visibility: "visible",
+          overflowY: "hidden",
+          overflowX: "hidden",
+          pointerEvents: "auto"
         });
 
-        tarjeta.appendChild(botonVolver);
+        tarjeta.classList.remove("contenido--animando");
+        tarjeta.classList.add("contenido--final");
+        tarjeta.inert = false;
+        tarjeta.setAttribute("aria-hidden", "false");
+
+        agregarBotonVolver(tarjeta);
+
+        portada.classList.add("esta-abierta");
+        portada.classList.add("invitacion-desplegada");
+
+        desplegada = true;
+      } else {
+        boton.disabled = false;
+        boton.setAttribute("aria-expanded", "false");
+
+        portada.classList.remove("esta-abierta");
+        portada.classList.remove("invitacion-desplegada");
+      }
+    } finally {
+      animando = false;
     }
-
-    boton.addEventListener("click", async () => {
-        if (animando || desplegada) return;
-
-        animando = true;
-        boton.disabled = true;
-        boton.setAttribute("aria-expanded", "true");
-
-        let tarjeta;
-        let movimiento;
-
-        try {
-            tarjeta = plantilla.content.firstElementChild.cloneNode(true);
-            tarjeta.id = "contenidoInvitacion";
-            tarjeta.inert = false;
-            tarjeta.setAttribute("aria-hidden", "false");
-
-            document.body.appendChild(tarjeta);
-
-            const inicio = sobre.getBoundingClientRect();
-
-            if (!inicio.width || !inicio.height) {
-                throw new Error("No se pudo medir el sobre.");
-            }
-
-            const destino = obtenerDestino();
-
-            Object.assign(tarjeta.style, {
-                position: "fixed",
-                left: `${destino.left}px`,
-                top: `${destino.top}px`,
-                width: `${destino.width}px`,
-                height: `${destino.height}px`,
-                margin: "0",
-                zIndex: "1000",
-                boxSizing: "border-box",
-                transformOrigin: "top left",
-                overflowY: "hidden",
-                overflowX: "hidden",
-                opacity: "0.90",
-                visibility: "visible",
-                pointerEvents: "painted"
-            });
-
-            tarjeta.classList.add("contenido--animando");
-
-            const escalaX = inicio.width / destino.width;
-            const escalaY = inicio.height / destino.height;
-            const desplazamientoX = inicio.left - destino.left;
-            const desplazamientoY = inicio.top - destino.top;
-
-            const transformacionInicial =
-                `translate(${desplazamientoX}px, ${desplazamientoY}px) ` +
-                `scale(${escalaX}, ${escalaY})`;
-
-            tarjeta.style.transform = transformacionInicial;
-            tarjeta.getBoundingClientRect();
-
-            await siguienteFrame();
-
-            portada.classList.add("esta-abierta");
-            portada.classList.add("invitacion-desplegada");
-
-            movimiento = tarjeta.animate(
-                [
-                    { transform: transformacionInicial },
-                    { transform: "translate(0, 0) scale(1, 1)" }
-                ],
-                {
-                    duration: 1000,
-                    easing: "cubic-bezier(0.25, 0.1, 0.25, 1)",
-                    fill: "forwards"
-                }
-            );
-
-            Object.assign(tarjeta.style, {
-                transform: "none",
-                overflowX: "hidden",
-                overflowY: "auto",
-                pointerEvents: "auto"
-            });
-
-            tarjeta.classList.remove("contenido--animando");
-            tarjeta.classList.add("contenido--final");
-
-            agregarBotonVolver(tarjeta);
-
-            desplegada = true;
-
-            movimiento.onfinish = () => {
-                const ampersand = Array.from(
-                    tarjeta.querySelectorAll(".contenido__nombres span")
-                ).find((elemento) =>
-                    elemento.textContent.includes("&")
-                );
-
-                if (ampersand) {
-                    mostrarCorazon(ampersand);
-                } else {
-                    console.warn(
-                        "No se encontró el &. Revisá el HTML de los nombres."
-                    );
-                }
-            };
-        } catch (error) {
-            console.error("Error al abrir la invitación:", error);
-
-            if (movimiento) movimiento.cancel();
-
-            if (tarjeta?.isConnected) {
-                const destino = obtenerDestino();
-
-                Object.assign(tarjeta.style, {
-                    position: "fixed",
-                    left: `${destino.left}px`,
-                    top: `${destino.top}px`,
-                    width: `${destino.width}px`,
-                    height: `${destino.height}px`,
-                    transform: "none",
-                    opacity: "1",
-                    visibility: "visible",
-                    overflowY: "auto",
-                    overflowX: "hidden",
-                    pointerEvents: "auto"
-                });
-
-                tarjeta.classList.remove("contenido--animando");
-                tarjeta.classList.add("contenido--final");
-                tarjeta.inert = false;
-                tarjeta.setAttribute("aria-hidden", "false");
-
-                agregarBotonVolver(tarjeta);
-
-                portada.classList.add("esta-abierta");
-                portada.classList.add("invitacion-desplegada");
-
-                desplegada = true;
-            } else {
-                boton.disabled = false;
-                boton.setAttribute("aria-expanded", "false");
-
-                portada.classList.remove("esta-abierta");
-                portada.classList.remove("invitacion-desplegada");
-            }
-        } finally {
-            animando = false;
-        }
-    });
+  });
 });
