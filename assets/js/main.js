@@ -16,27 +16,30 @@ document.addEventListener("DOMContentLoaded", () => {
         new Promise((resolve) => requestAnimationFrame(resolve));
 
     function mostrarCorazon(destino) {
-        if (!destino) return;
+        if (!destino) {
+            console.warn("No se encontró el elemento & de los nombres.");
+            return;
+        }
 
         const posicion = destino.getBoundingClientRect();
 
-        const corazones = document.createElementNS(
+        const corazon = document.createElementNS(
             "http://www.w3.org/2000/svg",
             "svg"
         );
 
-        corazones.setAttribute("viewBox", "0 0 100 80");
-        corazones.setAttribute("width", "54");
-        corazones.setAttribute("height", "44");
-        corazones.setAttribute("aria-hidden", "true");
+        corazon.setAttribute("viewBox", "0 0 100 100");
+        corazon.setAttribute("width", "160");
+        corazon.setAttribute("height", "160");
+        corazon.setAttribute("aria-hidden", "true");
 
-        Object.assign(corazones.style, {
+        Object.assign(corazon.style, {
             position: "fixed",
             left: `${posicion.left + posicion.width / 2}px`,
             top: `${posicion.top + posicion.height / 2}px`,
+            width: "160px",
+            height: "160px",
             zIndex: "2000",
-            width: "54px",
-            height: "44px",
             overflow: "visible",
             pointerEvents: "none",
             transform: "translate(-50%, -50%) scale(0.1)",
@@ -44,60 +47,47 @@ document.addEventListener("DOMContentLoaded", () => {
             opacity: "0"
         });
 
-        const crearCorazon = (trazo) => {
-            const forma = document.createElementNS(
-                "http://www.w3.org/2000/svg",
-                "path"
-            );
-
-            forma.setAttribute("d", trazo);
-            forma.setAttribute("fill", "none");
-            forma.setAttribute("stroke", "#b99a62");
-            forma.setAttribute("stroke-width", "2");
-            forma.setAttribute("stroke-linecap", "round");
-            forma.setAttribute("stroke-linejoin", "round");
-
-            return forma;
-        };
-
-        corazones.appendChild(
-            crearCorazon(
-                "M45 35 C45 22 30 12 19 22 C5 35 23 51 45 68 C49 64 53 60 57 56"
-            )
+        const forma = document.createElementNS(
+            "http://www.w3.org/2000/svg",
+            "path"
         );
 
-        corazones.appendChild(
-            crearCorazon(
-                "M55 35 C55 22 70 12 81 22 C95 35 77 51 55 68 C51 64 47 60 43 56"
-            )
+        forma.setAttribute(
+            "d",
+            "M50 85 C40 76 10 55 10 32 C10 10 38 5 50 27 C62 5 90 10 90 32 C90 55 60 76 50 85 Z"
         );
 
-        document.body.appendChild(corazones);
+        forma.setAttribute("fill", "none");
+        forma.setAttribute("stroke", "#b99a62");
+        forma.setAttribute("stroke-width", "1.5");
+        forma.setAttribute("stroke-linecap", "round");
+        forma.setAttribute("stroke-linejoin", "round");
 
-        const animacion = corazones.animate(
+        corazon.appendChild(forma);
+        document.body.appendChild(corazon);
+
+        corazon.animate(
             [
                 {
                     transform: "translate(-50%, -50%) scale(0.1)",
                     opacity: 0
                 },
                 {
-                    transform: "translate(-50%, -50%) scale(0.7)",
+                    transform: "translate(-50%, -50%) scale(1.5)",
                     opacity: 1,
                     offset: 0.35
                 },
                 {
-                    transform: "translate(-50%, -50%) scale(1.5)",
+                    transform: "translate(-50%, -50%) scale(0.1)",
                     opacity: 0
                 }
             ],
             {
-                duration: 1800,
-                easing: "ease-out",
-                fill: "forwards"
+                duration: 2500,
+                iterations: Infinity,
+                easing: "ease-in-out"
             }
         );
-
-        animacion.onfinish = () => corazones.remove();
     }
 
     function obtenerDestino() {
@@ -297,8 +287,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 `scale(${escalaX}, ${escalaY})`;
 
             tarjeta.style.transform = transformacionInicial;
-
             tarjeta.getBoundingClientRect();
+
             await siguienteFrame();
 
             portada.classList.add("esta-abierta");
@@ -328,15 +318,23 @@ document.addEventListener("DOMContentLoaded", () => {
 
             agregarBotonVolver(tarjeta);
 
-            const ampersand = Array.from(
-                tarjeta.querySelectorAll(".contenido__nombres span")
-            ).find((elemento) => elemento.textContent.includes("&"));
+            desplegada = true;
 
             movimiento.onfinish = () => {
-                mostrarCorazon(ampersand);
-            };
+                const ampersand = Array.from(
+                    tarjeta.querySelectorAll(".contenido__nombres span")
+                ).find((elemento) =>
+                    elemento.textContent.includes("&")
+                );
 
-            desplegada = true;
+                if (ampersand) {
+                    mostrarCorazon(ampersand);
+                } else {
+                    console.warn(
+                        "No se encontró el &. Revisá el HTML de los nombres."
+                    );
+                }
+            };
         } catch (error) {
             console.error("Error al abrir la invitación:", error);
 
